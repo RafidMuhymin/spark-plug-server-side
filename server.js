@@ -6,17 +6,26 @@ const uri =
 
 const client = new MongoClient(uri);
 
-const app = express();
-const port = process.env.PORT || 8080;
+const app = express(),
+  port = process.env.PORT || 8080;
 
 app.get("/cars", async function (req, res, next) {
   try {
     await client.connect();
+
+    const cursor = {},
+      collection = client.db("spark-plug").collection("cars");
+
+    const result = await collection.find(cursor).toArray();
+
+    res.send(result);
+  } catch {
+    res.status(500);
+
+    res.send("Connection could not be established");
   } finally {
     await client.close();
   }
-
-  res.send("Hello World!");
 });
 
 app.listen(port);
