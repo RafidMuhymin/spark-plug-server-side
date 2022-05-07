@@ -1,0 +1,10 @@
+{
+  "name": "car-mania",
+  "version": "0.0.1",
+  "description": "Car Mania",
+  "main": "server.js",
+  "repository": "https://github.com/ProgrammingHeroWC4/warehouse-management-server-side-RafidMuhymin",
+  "author": "Rafid Muhymin Wafi",
+  "license": "MIT",
+  "private": true
+}
