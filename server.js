@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const app = express(),
   port = process.env.PORT || 8080,
@@ -21,6 +21,25 @@ app.get("/cars", async function (req, res, next) {
 
     res.send(result);
   } catch {
+    res.status(500);
+
+    res.send("Connection could not be established");
+  } finally {
+    await client.close();
+  }
+});
+
+app.get("/cars/:id", async function (req, res, next) {
+  try {
+    await client.connect();
+
+    const cursor = { _id: ObjectId(req.params.id) },
+      collection = client.db("spark-plug").collection("cars")
+
+    const [carDetails] = await collection.find(cursor).toArray();
+
+    res.send(carDetails);
+  } catch (error) {
     res.status(500);
 
     res.send("Connection could not be established");
