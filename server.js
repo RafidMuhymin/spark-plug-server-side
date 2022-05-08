@@ -8,7 +8,7 @@ const app = express(),
     "mongodb+srv://admin_soft_hard_system:yHb8P1bSRzhLgghx@cluster0.avzmu.mongodb.net/spark-plug?retryWrites=true&w=majority",
   client = new MongoClient(uri);
 
-app.use(cors());
+app.use(cors(), express.json());
 
 app.get("/cars", async function (req, res, next) {
   try {
@@ -73,15 +73,17 @@ app.put("/cars/:id", async function (req, res, next) {
   try {
     await client.connect();
 
-    console.log(req.body);
+    const cursor = { _id: ObjectId(req.body._id) },
+      collection = client.db("spark-plug").collection("cars");
 
-    // const cursor = { _id: ObjectId(req.params.id) },
-    //   collection = client.db("spark-plug").collection("cars");
+    delete req.body._id;
 
-    // const [carDetails] = await collection.find(cursor).toArray();
+    const updateDetails = await collection.updateOne(cursor, {
+      $set: req.body,
+    });
 
-    // res.send(carDetails);
-  } catch {
+    res.send(updateDetails);
+  } catch (error) {
     res.status(500);
 
     res.send("Connection could not be established");
