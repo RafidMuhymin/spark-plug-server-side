@@ -48,4 +48,61 @@ app.get("/cars/:id", async function (req, res, next) {
   }
 });
 
+app.post("/cars/:id", async function (req, res, next) {
+  try {
+    await client.connect();
+
+    const cursor = { _id: ObjectId(req.params.id) },
+      collection = client.db("spark-plug").collection("cars")
+
+    const [carDetails] = await collection.find(cursor).toArray();
+
+    res.send(carDetails);
+  } catch (error) {
+    res.status(500);
+
+    res.send("Connection could not be established");
+  } finally {
+    await client.close();
+  }
+});
+
+app.put("/cars/:id", async function (req, res, next) {
+  try {
+    await client.connect();
+
+    const cursor = { _id: ObjectId(req.params.id) },
+      collection = client.db("spark-plug").collection("cars")
+
+    const [carDetails] = await collection.find(cursor).toArray();
+
+    res.send(carDetails);
+  } catch (error) {
+    res.status(500);
+
+    res.send("Connection could not be established");
+  } finally {
+    await client.close();
+  }
+});
+
+app.delete("/cars/:id", async function (req, res, next) {
+  try {
+    await client.connect();
+
+    const cursor = { _id: ObjectId(req.params.id) },
+      collection = client.db("spark-plug").collection("cars")
+
+    const [carDetails] = await collection.find(cursor).toArray();
+
+    res.send(carDetails);
+  } catch (error) {
+    res.status(500);
+
+    res.send("Connection could not be established");
+  } finally {
+    await client.close();
+  }
+});
+
 app.listen(port);
