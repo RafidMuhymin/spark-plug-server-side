@@ -14,10 +14,12 @@ app.get("/cars", async function (req, res, next) {
   try {
     await client.connect();
 
+    const limit = parseInt(req.query.limit || 0);
+
     const cursor = {},
       collection = client.db("spark-plug").collection("cars");
 
-    const result = await collection.find(cursor).toArray();
+    const result = await collection.find(cursor).limit(limit).toArray();
 
     res.send(result);
   } catch {
@@ -34,7 +36,7 @@ app.get("/cars/:id", async function (req, res, next) {
     await client.connect();
 
     const cursor = { _id: ObjectId(req.params.id) },
-      collection = client.db("spark-plug").collection("cars")
+      collection = client.db("spark-plug").collection("cars");
 
     const [carDetails] = await collection.find(cursor).toArray();
 
@@ -53,7 +55,7 @@ app.post("/cars/:id", async function (req, res, next) {
     await client.connect();
 
     const cursor = { _id: ObjectId(req.params.id) },
-      collection = client.db("spark-plug").collection("cars")
+      collection = client.db("spark-plug").collection("cars");
 
     const [carDetails] = await collection.find(cursor).toArray();
 
@@ -71,13 +73,15 @@ app.put("/cars/:id", async function (req, res, next) {
   try {
     await client.connect();
 
-    const cursor = { _id: ObjectId(req.params.id) },
-      collection = client.db("spark-plug").collection("cars")
+    console.log(req.body);
 
-    const [carDetails] = await collection.find(cursor).toArray();
+    // const cursor = { _id: ObjectId(req.params.id) },
+    //   collection = client.db("spark-plug").collection("cars");
 
-    res.send(carDetails);
-  } catch (error) {
+    // const [carDetails] = await collection.find(cursor).toArray();
+
+    // res.send(carDetails);
+  } catch {
     res.status(500);
 
     res.send("Connection could not be established");
@@ -91,7 +95,7 @@ app.delete("/cars/:id", async function (req, res, next) {
     await client.connect();
 
     const cursor = { _id: ObjectId(req.params.id) },
-      collection = client.db("spark-plug").collection("cars")
+      collection = client.db("spark-plug").collection("cars");
 
     const [carDetails] = await collection.find(cursor).toArray();
 
