@@ -101,6 +101,10 @@ app.delete("/cars/:id", async function (req, res, next) {
 
     const [carDetails] = await collection.find(cursor).toArray();
 
+    const deleteDetails = await collection.updateOne(cursor);
+
+    res.send(deleteDetails);
+
     res.send(carDetails);
   } catch (error) {
     res.status(500);
