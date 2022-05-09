@@ -14,10 +14,13 @@ app.get("/cars", async function (req, res, next) {
   try {
     await client.connect();
 
-    const limit = parseInt(req.query.limit || 0);
+    const limit = parseInt(req.query.limit || 0),
+      userId = req.query.userId;
 
     const cursor = {},
       collection = client.db("spark-plug").collection("cars");
+
+    if (userId) cursor.userId = userId;
 
     const result = await collection.find(cursor).limit(limit).toArray();
 
