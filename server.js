@@ -50,16 +50,17 @@ app.get("/cars/:id", async function (req, res, next) {
   }
 });
 
-app.post("/cars/:id", async function (req, res, next) {
+app.post("/cars", async function (req, res, next) {
   try {
     await client.connect();
 
-    const cursor = { _id: ObjectId(req.params.id) },
-      collection = client.db("spark-plug").collection("cars");
+    const collection = client.db("spark-plug").collection("cars");
 
-    const [carDetails] = await collection.find(cursor).toArray();
+    const carDetails = req.body;
 
-    res.send(carDetails);
+    const insertDetails = await collection.insertOne(carDetails);
+
+    res.send(insertDetails);
   } catch (error) {
     res.status(500);
 
