@@ -1,11 +1,11 @@
+import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
 
 const app = express(),
   port = process.env.PORT || 8080,
-  uri =
-    "mongodb+srv://admin_soft_hard_system:yHb8P1bSRzhLgghx@cluster0.avzmu.mongodb.net/spark-plug?retryWrites=true&w=majority",
+  uri = process.env.MONGODB_CONNECTION_URI,
   client = new MongoClient(uri);
 
 app.use(cors(), express.json());
